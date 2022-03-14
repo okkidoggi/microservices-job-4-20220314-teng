@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REST Client</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <script type="text/javascript">
+        function postBooking() {
+            alert('POST a new booking');
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    //process response
+                    console.log(xhttp.response);
+                }
+            };
+            // create a JSON object
+            const json = {
+                "id": 0,
+                "dateTime": "2022-02-21",
+                "pickupPoint": "Fusionopolis 2",
+                "destination": "VivoCity",
+                "currentLocationLatitude": 123.59,
+                "currentLocationLongitude": 777.88
+            };
+            // open request
+            xhttp.open('POST', 'http://localhost:5000/api/Bookings');
+            // set `Content-Type` header
+            xhttp.setRequestHeader('Content-Type', 'application/json');
+            // send rquest with JSON payload
+            xhttp.send(JSON.stringify(json));
+        }
+        function viewAllBooking() {
+            alert('GET all bookings');
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    //process response
+                    console.log(xhttp.response);
+                }
+            };
+            xhttp.open("GET", 'http://localhost:5000/api/Bookings', true);
+            xhttp.send();
+        }
+        function viewBooking() {
+            alert('GET booking {id = 1}');
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    //process response
+                    console.log(xhttp.response);
+                }
+            };
+            xhttp.open("GET", 'http://localhost:5000/api/Bookings/1', true);
+            xhttp.send();
+        }
+        function deleteBooking() {
+            alert('DELETE booking {id = 2}');
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    //process response
+                    console.log(xhttp.response);
+                }
+            };
+            xhttp.open("DELETE", 'http://localhost:5000/api/Bookings/2', true);
+            xhttp.send();
+        }
+        function updateBooking() {
+            alert('PUT booking {id = 4}');
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    //process response
+                    console.log(xhttp.response);
+                }
+            };
+            // create a JSON object
+            const json = {
+                "id": 4,
+                "dateTime": "2022-03-12",
+                "pickupPoint": "OneNorth",
+                "destination": "StarVista Cold Storage",
+                "currentLocationLatitude": 523.59,
+                "currentLocationLongitude": 277.88
+            };
+            // open request
+            xhttp.open('PUT', 'http://localhost:5000/api/Bookings/4');
+            // set `Content-Type` header
+            xhttp.setRequestHeader('Content-Type', 'application/json');
+            // send rquest with JSON payload
+            xhttp.send(JSON.stringify(json));
+        }
+
+        function updateTable() {
+            //alert('GET and update table');
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    //process response
+                    console.log(xhttp.response);
+                    xhttp.responseText
+
+                    // Add products to <table>
+                    // First check if a <tbody> tag exists, add one if not
+                    if ($("#usersTable tbody").length == 0) {
+                        $("#usersTable").append("<tbody></tbody>");
+                    }
+
+                    // Append product to the table
+                    const myObj = JSON.parse(xhttp.responseText);
+                    for (let i = 0; i < myObj.length; i++) {
+                        
+                        $("#usersTable tbody").append("<tr>" +
+                            "<td>" +
+                            myObj[i].id +
+                            "</td>" +
+                            "<td>" +
+                            myObj[i].name +
+                            "</td>" +
+                            "<td>" +
+                            myObj[i].username +
+                            "</td>" +
+                            "<td>" +
+                            myObj[i].email +
+                            "</td>" +
+                            "</tr>");
+                        
+                    }
+
+                   
+
+                   
+                
+
+
+                }
+            };
+            xhttp.open("GET", 'https://jsonplaceholder.typicode.com/users', true);
+            xhttp.send();
+            
+        }
+
+    </script>
+</head>
+<body>
+    <h1>Taxi Booking REST Client</h1>
+    <h1>------------------------------------------------------------</h1>
+    <b>
+        Use JavaScript Fetch command to retrieve all the bookings information from the API created in task 2:
+    </b>
+    <div>
+        <button onclick="postBooking()">Add booking</button>
+        <button onclick="updateBooking()">Update booking</button>
+        <button onclick="deleteBooking()">Delete booking</button>
+        <button onclick="viewBooking()">View booking</button>
+        <button onclick="viewAllBooking()">View all bookings</button>
+    </div>
+    <h1>------------------------------------------------------------</h1>
+    <b>
+        Update the HTML table with the data retrieved from the REST API https://jsonplaceholder.typicode.com/users
+    </b>
+    <div>
+        <button onclick="updateTable()">Update table</button>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>List Users</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <table id="usersTable" class="table table-bordered table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>username</th>
+                            <th>email</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
